@@ -10,8 +10,9 @@ $ node index.js
 
 ### How to resolve an IP address [API Endpoint]?
 
+Send a query param of `?ip=A.B.C.D` at the end of the hosted URL
 `
-http://localhost:8080/?ip=A.B.C.D
+http://localhost:3000/?ip=A.B.C.D
 `
 
 ### What is the response that we get?
@@ -30,6 +31,14 @@ http://localhost:8080/?ip=A.B.C.D
     "region_name": "Telangana"
 }
 ```
+
+## Is there a docker image for this?
+You bet! You can use the image by executing (parameters of `-p 3000:3000` will enable you to access the API from the URL http://localhost:3000/?ip=A.B.C.D).
+Read more at official [Docker Repository](https://hub.docker.com/r/mib200/geoiplite2-maxmind/)
+```bash
+$ docker container run -d --name geoip-server -p 3000:3000 mib200/geoiplite2-maxmind
+```
+
 
 ## Features
 
