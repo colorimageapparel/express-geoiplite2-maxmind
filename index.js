@@ -9,22 +9,18 @@ const path = require('path');
 const schedule = require('node-schedule');
 
 const resolve = file => path.resolve(__dirname, file);
-const ipLookup = maxmind.openSync(resolve('./ipDataBase.mmdb'), {
-  cache: {
-    max: 50000, // Max items in cache, by default it's 6000
-  },
-  watchForUpdates: true,
-});
-
 const app = express();
-
-app.use(compression());
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({
-  extended: false
-}));
-
 const downloadUrl = 'http://geolite.maxmind.com/download/geoip/database/GeoLite2-City.tar.gz';
+let ipLookup;
+
+function createDbInstance() {
+  ipLookup = maxmind.openSync(resolve('./ipDataBase.mmdb'), {
+    cache: {
+      max: 50000, // Max items in cache, by default it's 6000
+    },
+    watchForUpdates: true,
+  });
+}
 
 async function fetchAndProcessFile() {
   const fileName = downloadUrl.split('/').pop();
@@ -49,6 +45,7 @@ async function fetchAndProcessFile() {
                 await fs.move(resolve(`./${extractedFolder}/${ipDatabaseFile}`), resolve(`./ipDataBase.mmdb`), {
                   overwrite: true
                 });
+                createDbInstance();
                 fs.remove(filePath);
                 fs.remove(extractedFolderPath);
                 console.log(' [x] DB file processed and ready');
@@ -65,7 +62,32 @@ async function fetchAndProcessFile() {
   }
 }
 
-app.all('/', async (req, res) => {
+if (fs.existsSync(resolve('./ipDataBase.mmdb'))) {
+  createDbInstance();
+}
+
+console.log(' [x] Scheduling the task to fetch the database at 00:00 hrs on every Sunday');
+schedule.scheduleJob({
+  hour: 00,
+  minute: 00,
+  dayOfWeek: 0
+}, function () {
+  console.log('Scheduled task to be executed now');
+  fetchAndProcessFile();
+});
+
+fetchAndProcessFile();
+
+/*
+  Setup the actual server code
+ */
+app.use(compression());
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({
+  extended: false
+}));
+
+app.all('/', async(req, res) => {
   res.header('Access-Control-Allow-Origin', '*');
   try {
     const ip = req.query.ip;
@@ -92,7 +114,7 @@ app.all('/', async (req, res) => {
       responseObj.accuracy_radius = lookupObj.location.accuracy_radius;
       responseObj.city = lookupObj.city.names.en;
       responseObj.region_name = lookupObj.subdivisions[0].names.en;
-    } catch (err) { }
+    } catch (err) {}
 
     res.json(responseObj);
   } catch (err) {
@@ -104,12 +126,5 @@ app.all('/', async (req, res) => {
   }
 });
 
-console.log(' [x] Scheduling the task to fetch the database at 00:00 hrs on every Sunday');
-schedule.scheduleJob({hour: 00, minute: 00, dayOfWeek: 0}, function(){
-  console.log('Scheduled task to be executed now');
-  fetchAndProcessFile();
-});
-
-fetchAndProcessFile();
 console.log(' [x] Starting first time fetch of the IP Database');
 app.listen(3000, () => console.log(' [x] IP Resolver app listening on port 3000'))
