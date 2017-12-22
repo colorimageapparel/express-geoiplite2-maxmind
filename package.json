@@ -5,6 +5,14 @@
   "author": "Manish Kumar",
   "license": "MIT",
   "main": "index.js",
+  "homepage": "https://github.com/mib200/express-geoiplite2-maxmind",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mib200/express-geoiplite2-maxmind.git"
+  },
+  "bugs": {
+    "url": "https://github.com/mib200/express-geoiplite2-maxmind/issues"
+  },
   "dependencies": {
     "body-parser": "^1.18.2",
     "compression": "^1.7.1",
