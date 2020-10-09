@@ -1,7 +1,8 @@
 FROM node:8-alpine
 WORKDIR /app
 COPY package.json /app
-COPY index.js /app
 RUN npm install --only=production
+ENV PORT 80
+COPY index.js /app
 CMD node index.js
-EXPOSE 3000
+EXPOSE ${PORT}

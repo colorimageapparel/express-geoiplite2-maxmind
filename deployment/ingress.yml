@@ -1,0 +1,19 @@
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: ip-express-ingress
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
+spec:
+  tls:
+    - hosts:
+        - geo.alo.software
+      secretName: ip-express-tls
+  rules:
+    - host: geo.alo.software
+      http:
+        paths:
+          - backend:
+              serviceName: ip-express
+              servicePort: 80

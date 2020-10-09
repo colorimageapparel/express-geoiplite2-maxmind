@@ -1,0 +1,40 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: ip-express
+spec:
+  ports:
+  - port: 80
+    targetPort: 80
+  selector:
+    app: ip-express
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ip-express
+spec:
+  selector:
+    matchLabels:
+      app: ip-express
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: ip-express
+    spec:
+      containers:
+      - name: ip-express
+        image: aloyoga/ip-express:3
+        imagePullPolicy: Always
+        env:
+          - name: "PORT"
+            value: "80"
+          - name: "MAXMIND_DB_URL"
+            value: "https://---YOUR SPACES BUCKET HERE---.nyc3.digitaloceanspaces.com/GeoLite2-City.tar.gz"
+          - name: "EXCHANGE_RATES_URL"
+            value: "https://---YOUR SPACES BUCKET HERE---.nyc3.digitaloceanspaces.com/exchangeRates.json"
+          - name: "ORIGIN_WHITELIST"
+            value: "https://www.aloyoga.com https://aloyoga.com https://devaloyoga.myshopify.com https://dev2aloyoga.myshopify.com"
+        ports:
+        - containerPort: 80

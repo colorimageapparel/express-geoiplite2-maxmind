@@ -1,0 +1,35 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: update-currency-job
+spec:
+  schedule: "56 0,2,4,6,8,10,12,14,16,18,20,22 * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: update-currency
+            image: aloyoga/sync-files-job:1
+            env:
+            - name: "SYNC_FILES_1"
+              value: "exchangeRates.json::https://fcsapi.com/api-v2/forex/base_latest?symbol=USD&type=forex&access_key=__________________"
+          restartPolicy: OnFailure
+---
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: update-geo-job
+spec:
+  schedule: "0 12 * * 6"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: update-geo
+            image: aloyoga/sync-files-job:1
+            env:
+            - name: "SYNC_FILES_1"
+              value: "GeoLite2-City.tar.gz::https://download.maxmind.com/app/geoip_download?edition_id=GeoLite2-City&license_key=______________&suffix=tar.gz"
+          restartPolicy: OnFailure
