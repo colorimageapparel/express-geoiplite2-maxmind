@@ -19,14 +19,15 @@
     "express": "^4.16.2",
     "fs-extra": "^5.0.0",
     "maxmind": "^2.4.0",
-    "node-fetch": "^1.7.3",
+    "node-fetch": "^2.6.1",
     "node-schedule": "^1.2.5",
-    "tar": "^4.2.0"
+    "tar": "^4.4.13"
   },
   "devDependencies": {
     "babel-eslint": "^8.0.3",
     "eslint": "^4.13.1",
     "eslint-config-airbnb-base": "^12.1.0",
-    "eslint-plugin-import": "^2.8.0"
+    "eslint-plugin-import": "^2.8.0",
+    "caprover": "^2.1.1"
   }
 }
