@@ -547,6 +547,7 @@ app.all('/', async (req, res) => {
     } catch (err) {
       console.error(err);
     }
+    res.header('cache-control', 'max-age=43200,private,immutable');
 
     res.json(responseObj);
   } catch (err) {
