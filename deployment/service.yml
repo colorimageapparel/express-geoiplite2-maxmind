@@ -17,7 +17,7 @@ spec:
   selector:
     matchLabels:
       app: ip-express
-  replicas: 2
+  replicas: 4
   template:
     metadata:
       labels:
@@ -25,7 +25,7 @@ spec:
     spec:
       containers:
       - name: ip-express
-        image: aloyoga/ip-express:3
+        image: aloyoga/ip-express:4
         imagePullPolicy: Always
         env:
           - name: "PORT"
