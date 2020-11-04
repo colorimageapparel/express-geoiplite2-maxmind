@@ -12,8 +12,16 @@ spec:
           - name: update-currency
             image: aloyoga/sync-files-job:1
             env:
+            - name: "SPACES_NAME"
+              value: "alo-geo-distribution"
+            - name: "SPACES_KEY"
+              value: "2QR5O3GEZWXTFSWPOVTC"
+            - name: "SPACES_SECRET"
+              value: "UqkUkzTrKdRUvE+1717RjNSVbni6N2M/TmtSNaon130"
+            - name: "SPACES_ENDPOINT"
+              value: "nyc3.digitaloceanspaces.com"
             - name: "SYNC_FILES_1"
-              value: "exchangeRates.json::https://fcsapi.com/api-v2/forex/base_latest?symbol=USD&type=forex&access_key=__________________"
+              value: "exchangeRates.json::https://fcsapi.com/api-v2/forex/base_latest?symbol=USD&type=forex&access_key=LMW4kIieolOPNEJnL20t19dmWhZ3AsaM4pjqLjKDUuxRCyHI"
           restartPolicy: OnFailure
 ---
 apiVersion: batch/v1beta1
@@ -30,6 +38,14 @@ spec:
           - name: update-geo
             image: aloyoga/sync-files-job:1
             env:
+            - name: "SPACES_NAME"
+              value: "alo-geo-distribution"
+            - name: "SPACES_KEY"
+              value: "2QR5O3GEZWXTFSWPOVTC"
+            - name: "SPACES_SECRET"
+              value: "UqkUkzTrKdRUvE+1717RjNSVbni6N2M/TmtSNaon130"
+            - name: "SPACES_ENDPOINT"
+              value: "nyc3.digitaloceanspaces.com"
             - name: "SYNC_FILES_1"
-              value: "GeoLite2-City.tar.gz::https://download.maxmind.com/app/geoip_download?edition_id=GeoLite2-City&license_key=______________&suffix=tar.gz"
+              value: "GeoLite2-City.tar.gz::https://download.maxmind.com/app/geoip_download?edition_id=GeoLite2-City&license_key=jCGk7j7sV0jtYnGa&suffix=tar.gz"
           restartPolicy: OnFailure
