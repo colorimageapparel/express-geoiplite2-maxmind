@@ -502,9 +502,21 @@ app.all('/', async (req, res) => {
     };
 
     try {
+      if (lookupObj === null) {
+        res.header('retry-after', '10');
+        /* "Temporarily" unavailable because the implication is that this condition will
+          be resolved by you moving to an IP that isn't so weird. In testing this pretty much can only happen
+          when you are coming from the localhost. */
+        res.status(503).json({
+          status: 'error',
+          message: 'No data found for this IP',
+          ip,
+        });
+        return null;
+      }
       // console.log(lookupObj);
-      responseObj.country_code = lookupObj.country.iso_code;
-      responseObj.country_name = lookupObj.country.names.en;
+      responseObj.country_code = lookupObj.country ? lookupObj.country.iso_code : null;
+      responseObj.country_name = lookupObj.country ? lookupObj.country.names.en : null;
       responseObj.is_eu = euPlacesMap[responseObj.country_code] || false;
       responseObj.currency = currencies[responseObj.country_code] || 'USD';
       if (lookupObj.postal && lookupObj.postal.code) {
@@ -550,7 +562,6 @@ app.all('/', async (req, res) => {
         message: 'unable to process request',
         error: err.toString(),
       });
-  
     }
   }
 });
