@@ -544,6 +544,10 @@ app.all('/', async (req, res) => {
       responseObj.region_name = (lookupObj.subdivisions && lookupObj.subdivisions[0])
         ? lookupObj.subdivisions[0].names.en
         : null;
+      responseObj.region_code = (lookupObj.subdivisions && lookupObj.subdivisions[0])
+        ? lookupObj.subdivisions[0].iso_code
+        : null;
+
     } catch (err) {
       console.error(err);
     }
