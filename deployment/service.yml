@@ -25,7 +25,7 @@ spec:
     spec:
       containers:
       - name: ip-express
-        image: aloyoga/ip-express:4
+        image: aloyoga/ip-express:5
         imagePullPolicy: Always
         env:
           - name: "PORT"
