@@ -35,6 +35,6 @@ spec:
           - name: "EXCHANGE_RATES_URL"
             value: "https://alo-geo-distribution.nyc3.digitaloceanspaces.com/exchangeRates.json"
           - name: "ORIGIN_WHITELIST"
-            value: "https://www.aloyoga.com https://aloyoga.com https://devaloyoga.myshopify.com https://dev2aloyoga.myshopify.com"
+            value: "https://www.aloyoga.com https://aloyoga.com https://alo-yoga.myshopify.com https://devaloyoga.myshopify.com https://dev2aloyoga.myshopify.com"
         ports:
         - containerPort: 80
